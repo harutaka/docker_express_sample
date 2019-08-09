@@ -1,0 +1,15 @@
+version: '3.7'
+
+services:
+  express:
+    build:
+      context: exapp/
+      dockerfile: Dockerfile
+    volumes:
+      - ./exapp/:/scripts/
+      - node_modules:/scripts/node_modules
+    ports:
+      - 3000:3000
+
+volumes:
+  node_modules:
