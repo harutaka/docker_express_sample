@@ -1,16 +1,27 @@
 # docker_express_sample
-docker-composeを用い、expressベースのWebアプリを起動するサンプルである。
+dockerを用い、expressベースのWebアプリを起動するサンプルである。
 
-## 必要な環境とバージョン
-* Docker
-  * 19.03.1
-* docker-compose
-  * 1.24.1
+## API サーバー起動方法
 
-## 使い方
-docker-compose.yamlがあるディレクトリにて、以下コマンドを実行する。  
-すると、ホスト側の3000ポートでexpressのアプリが起動する。
+#### 環境構築
+
+初回は以下コマンドを実行。  
+npm ci でもよい。npm ci は環境変数 NODE_ENV が production の場合、  
+-D オプション付きでインストールした（開発用の）パッケージをインストールしない
 
 ```
-docker-compose up
+$ npm install
+```
+
+#### 開発時
+
+```
+$ npm run dev
+```
+
+#### 通常起動
+
+```
+$ npm run build
+$ npm start
 ```
