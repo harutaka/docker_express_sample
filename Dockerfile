@@ -17,7 +17,7 @@ RUN npm run build
 # ------------------------------------------
 # Package install Stage
 
-FROM --platform=$BUILDPLATFORM node:22-bookworm-slim AS module
+FROM --platform=$BUILDPLATFORM build AS module
 
 WORKDIR /modules
 
