@@ -1,39 +1,44 @@
+# syntax=docker/dockerfile:1
+
 # Build Stage
-FROM node:18-bullseye-slim AS build
+FROM --platform=$BUILDPLATFORM node:22-bookworm-slim AS build
 
 WORKDIR /build
 
-COPY package*.json ./
-RUN npm ci
+RUN --mount=type=bind,source=package.json,target=package.json \
+    --mount=type=bind,source=package-lock.json,target=package-lock.json \
+    --mount=type=cache,target=/root/.npm,sharing=locked \
+    npm ci
 
 COPY . .
-RUN npm run build && rm -rf ./dist/test
+RUN npm run build
 
 # ------------------------------------------
 # Package install Stage
 
-FROM node:18-bullseye-slim AS module
-ENV NODE_ENV=production
+FROM --platform=$BUILDPLATFORM node:22-bookworm-slim AS module
 
 WORKDIR /modules
 
-COPY package*.json ./
-
-RUN npm ci
+RUN --mount=type=bind,source=package.json,target=package.json \
+    --mount=type=bind,source=package-lock.json,target=package-lock.json \
+    --mount=type=cache,target=/root/.npm,sharing=locked \
+    npm ci --omit=dev
 
 # ------------------------------------------
 # Run Stage
-FROM node:18-bullseye-slim AS final
+FROM --platform=$BUILDPLATFORM node:22-bookworm-slim AS final
 
-ENV NODE_ENV=production
-ENV PORT=4000
+ARG PORT=3000
+ENV PORT=${PORT}
 
 WORKDIR /app
 
 COPY package*.json ./
 
-COPY --from=build /build/dist ./dist
+COPY --from=build /build/dist/src ./dist/src
 COPY --from=module /modules/node_modules ./node_modules
 
 EXPOSE ${PORT}
-CMD ["dist/src/app"]
+
+ENTRYPOINT ["node", "dist/src/app"]
