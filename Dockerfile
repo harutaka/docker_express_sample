@@ -10,6 +10,7 @@ RUN --mount=type=bind,source=package.json,target=package.json \
     --mount=type=cache,target=/root/.npm,sharing=locked \
     npm ci
 
+# mountでは読み取り専用になるのでコピー
 COPY . .
 RUN npm run build
 
