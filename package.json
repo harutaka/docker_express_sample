@@ -1,25 +1,25 @@
 {
-    "name": "docker_express_sample",
-    "version": "0.0.3",
-    "type": "module",
-    "scripts": {
-        "start": "node ./dist/src/app",
-        "build": "tsc",
-        "dev": "tsx ./src/app",
-        "lint": "biome check src/**/*.ts __tests__/**/*.ts",
-        "format": "biome format --write src/*.ts __tests__/*.ts",
-        "test": "vitest"
-    },
-    "dependencies": {
-        "dotenv": "^17.2.1",
-        "express": "^5.1.0"
-    },
-    "devDependencies": {
-        "@biomejs/biome": "^2.2.2",
-        "@types/express": "^5.0.1",
-        "@types/node": "^22.13.13",
-        "tsx": "^4.19.3",
-        "typescript": "^5.8.2",
-        "vitest": "^3.0.9"
-    }
+  "name": "docker_express_sample",
+  "version": "0.0.4",
+  "type": "module",
+  "scripts": {
+    "start": "node ./dist/src/app",
+    "build": "tsc",
+    "dev": "tsx --watch ./src/app",
+    "lint": "biome check ./src/**/*.ts ./__tests__",
+    "format": "biome format --write ./src ./__tests__",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.2",
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.2.2",
+    "@types/express": "^5.0.3",
+    "@types/node": "^22.18.0",
+    "tsx": "^4.20.5",
+    "typescript": "^5.9.2",
+    "vitest": "^3.2.4"
+  }
 }
