@@ -1,5 +1,5 @@
-import { Router } from "express"
-const router = Router()
+import { Router, type Router as RouterType } from "express"
+const router: RouterType = Router()
 import * as base from "../handlers/base.js"
 
 router.get("/health", base.getHealth)

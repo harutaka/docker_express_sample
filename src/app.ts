@@ -1,12 +1,10 @@
-import express, { Request, Response, NextFunction } from "express"
+import "dotenv/config"
+import express, { Request, Response, NextFunction, type Express } from "express"
 import base from "./routes/base.js"
 
-export const app = express()
+export const app: Express = express()
 
 app.use(express.json())
-
-// サーバ情報を出力しないようにする
-app.disable("x-powered-by")
 
 const path = "/"
 app.use(path, base) // 基本ルーティング
