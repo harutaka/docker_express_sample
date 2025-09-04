@@ -1,45 +1,34 @@
 # syntax=docker/dockerfile:1
 
-# Build Stage
-FROM --platform=$BUILDPLATFORM node:22-bookworm-slim AS build
-
-WORKDIR /build
-
-RUN --mount=type=bind,source=package.json,target=package.json \
-    --mount=type=bind,source=package-lock.json,target=package-lock.json \
-    --mount=type=cache,target=/root/.npm,sharing=locked \
-    npm ci
-
-# mountでは読み取り専用になるのでコピー
-COPY . .
-RUN npm run build
+FROM node:22-bookworm-slim AS base
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
+# RUN npm install -g pnpm  # For Node 25 or above
+COPY . /app
+WORKDIR /app
 
 # ------------------------------------------
 # Package install Stage
+FROM base AS module
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-lockfile
 
-FROM --platform=$BUILDPLATFORM build AS module
-
-WORKDIR /modules
-
-RUN --mount=type=bind,source=package.json,target=package.json \
-    --mount=type=bind,source=package-lock.json,target=package-lock.json \
-    --mount=type=cache,target=/root/.npm,sharing=locked \
-    npm ci --omit=dev
+# ------------------------------------------
+# Build Stage
+FROM base AS build
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+RUN pnpm run build
 
 # ------------------------------------------
 # Run Stage
-FROM --platform=$BUILDPLATFORM node:22-bookworm-slim AS final
+FROM base AS final
 
 ARG PORT=3000
 ENV PORT=${PORT}
 
-WORKDIR /app
-
-COPY package*.json ./
-
-COPY --from=build /build/dist/src ./dist/src
-COPY --from=module /modules/node_modules ./node_modules
+COPY --from=module /app/node_modules /app/node_modules
+COPY --from=build /app/dist /app/dist
 
 EXPOSE ${PORT}
 
-ENTRYPOINT ["node", "dist/src/app"]
+CMD [ "pnpm", "start" ]
