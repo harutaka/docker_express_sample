@@ -1,5 +1,5 @@
 import "dotenv/config"
-import express, { Request, Response, NextFunction, type Express } from "express"
+import express, { type Express, type NextFunction, type Request, type Response } from "express"
 import base from "./routes/base.js"
 
 export const app: Express = express()
