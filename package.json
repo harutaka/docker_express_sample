@@ -6,27 +6,20 @@
         "start": "node ./dist/src/app",
         "build": "tsc",
         "dev": "tsx ./src/app",
-        "lint": "eslint src/**/*.ts __tests__/**/*.ts",
-        "prettier": "prettier --write src/*.ts __tests__/*.ts",
+        "lint": "biome check src/**/*.ts __tests__/**/*.ts",
+        "format": "biome format --write src/*.ts __tests__/*.ts",
         "test": "vitest"
     },
-    "prettier": {
-        "printWidth": 120,
-        "semi": false
-    },
     "dependencies": {
-        "express": "^5.1.0",
-        "dotenv": "^17.2.1"
+        "dotenv": "^17.2.1",
+        "express": "^5.1.0"
     },
     "devDependencies": {
-        "@eslint/js": "^9.23.0",
+        "@biomejs/biome": "^2.2.2",
         "@types/express": "^5.0.1",
         "@types/node": "^22.13.13",
-        "eslint": "^9.23.0",
-        "prettier": "^3.5.3",
         "tsx": "^4.19.3",
         "typescript": "^5.8.2",
-        "typescript-eslint": "^8.28.0",
         "vitest": "^3.0.9"
     }
 }
