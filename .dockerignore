@@ -61,3 +61,8 @@ typings/
 .next
 
 dist
+.vscode
+__tests__
+.git
+.gitignore
+*.md
