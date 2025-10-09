@@ -32,6 +32,7 @@ src/routes/base.ts で定義されている現在のエンドポイント：
 - `GET /date` - 現在の日付を返す
 - `GET /score` - インメモリストアから現在のスコアを返す
 - `PUT /score` - インメモリストアのスコアを更新
+- `GET /version` - アプリケーションのバージョン情報を返す（package.jsonから取得）
 
 ## ローカル開発手順
 
