@@ -9,5 +9,6 @@ router.get("/readiness", base.getReadiness);
 router.get("/date", base.getDate);
 router.get("/score", base.getScore);
 router.put("/score", base.putScore);
+router.get("/version", base.getVersion);
 
 export default router;

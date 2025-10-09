@@ -1,3 +1,6 @@
+import { readFile } from "node:fs/promises";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import type { RequestHandler } from "express";
 
 const tempStub = {
@@ -27,4 +30,17 @@ export const putScore: RequestHandler = async (req, res, _next) => {
 
   tempStub.score = req.body.score;
   return res.json(req.body);
+};
+
+export const getVersion: RequestHandler = async (_req, res, _next) => {
+  try {
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = dirname(__filename);
+    const packageJsonPath = join(__dirname, "../../package.json");
+    const packageJson = await readFile(packageJsonPath, "utf-8");
+    const { version } = JSON.parse(packageJson);
+    return res.json({ version });
+  } catch (_error) {
+    throw new Error("Failed to read version information.");
+  }
 };
