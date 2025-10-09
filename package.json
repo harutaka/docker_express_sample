@@ -6,8 +6,9 @@
     "start": "node ./dist/src/app",
     "build": "tsc",
     "dev": "tsx --watch ./src/app",
-    "lint": "biome check ./src/**/*.ts ./__tests__",
-    "format": "biome format --write ./src ./__tests__",
+    "lint": "biome check ./src/**/*.ts ./tests",
+    "format": "biome format --write ./src ./tests",
+    "prepare": "simple-git-hooks",
     "test": "vitest"
   },
   "dependencies": {
@@ -18,8 +19,16 @@
     "@biomejs/biome": "^2.2.2",
     "@types/express": "^5.0.3",
     "@types/node": "^22.18.0",
+    "lint-staged": "^16.2.3",
+    "simple-git-hooks": "^2.13.1",
     "tsx": "^4.20.5",
     "typescript": "^5.9.2",
     "vitest": "^3.2.4"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm dlx lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": "pnpm run format"
   }
 }
